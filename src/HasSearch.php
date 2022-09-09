@@ -186,7 +186,7 @@ trait HasSearch
     public function searchByParams(array $params = []): array
     {
         $tableColumn = $this->getFullColumns();
-        $effectFields = array_column($tableColumn, 'Field');
+        $effectFields = array_column($tableColumn, 'field');
 
         /** @var Builder $query */
         $query = static::query();

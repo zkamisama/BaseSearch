@@ -1,6 +1,6 @@
 <?php
 
-namespace Feixun\BaseSearch;
+namespace app\model;
 
 use Illuminate\Database\Eloquent\Builder;
 use InvalidArgumentException;
@@ -64,6 +64,14 @@ trait HasSearch
     }
 
     /**
+     * @return string
+     */
+    public function getFullTable(): string
+    {
+        return  Db::connection()->getTablePrefix().$this->getTable();
+    }
+
+    /**
      * 根据类型获取操作符
      * @param string $type
      * @return string[]
@@ -87,6 +95,7 @@ trait HasSearch
     public function getRelationFields(): array
     {
         $maps = [];
+        $tablePrefix = Db::connection()->getTablePrefix();
         $class = new ReflectionClass(self::class);
         foreach ($class->getMethods() as $method) {
             $returnType = $method->getReturnType();
@@ -96,7 +105,7 @@ trait HasSearch
                     'type' => 'relation',
                     'field' => $method->getName(),
                     'label' => $this->_relationTrans[$method->getName()] ?? $method->getName(),
-                    'relation_fields' => $this->getFullColumns($relationTable)
+                    'relation_fields' => $this->getFullColumns($tablePrefix.$relationTable)
                 ];
             }
         }
@@ -139,7 +148,7 @@ trait HasSearch
      */
     public function getFullColumns(string $table = ''): array
     {
-        $table = $table ?: $this->getTable();
+        $table = $table ?: $this->getFullTable();
         $columns = Db::connection()->select('show FULL COLUMNS FROM ' . $table);
         return $this->parseTableFields($this->objectToArray($columns));
     }

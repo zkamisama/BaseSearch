@@ -1,6 +1,6 @@
 <?php
 
-namespace app\model;
+namespace Feixun\BaseSearch;
 
 use Illuminate\Database\Eloquent\Builder;
 use InvalidArgumentException;

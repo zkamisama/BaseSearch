@@ -1,0 +1,13 @@
+{
+  "name": "feixun/base-search",
+  "type": "library",
+  "license": "MIT",
+  "description": "Webman plugin feixun/base-search",
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Feixun\\BaseSearch\\": "src"
+    }
+  }
+}

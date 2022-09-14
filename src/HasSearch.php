@@ -195,6 +195,8 @@ trait HasSearch
             ['field' => $this->primaryKey, 'isAsc' => true]
         ];
         $relations = $params['relations'] ?? [];
+        $select = $params['select'] ?? ['*'];
+        $query->select($select);
 
         foreach ($filters as $filter) {
             if (!$this->checkFilter($filter)) {

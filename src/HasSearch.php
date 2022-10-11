@@ -16,6 +16,8 @@ trait HasSearch
 
     protected $_attributeLabels = [];
 
+    protected $_tableHeaders = [];
+
     private $_operators = [
         'LIKE' => 'like',
         'NLIKE' => 'not like',
@@ -167,7 +169,7 @@ trait HasSearch
             $tableFields[] = [
                 'type' => 'field',
                 'field' => $value['Field'],
-//                'field_type' => $fieldType,
+                'field_type' => $fieldType,
                 'label' => $this->_attributeLabels[$value['Field']] ?? ($value['Comment'] ?: $value['Field']),
                 'operator' => $fieldOperator
             ];
@@ -358,6 +360,29 @@ trait HasSearch
     }
 
     /**
+     * 获取默认表格头
+     * @return array
+     */
+    protected function getDefaultTableHeader(): array
+    {
+        return array_map(function($item) {
+            return [
+                'title' => $item['label'],
+                'dataIndex' => $item['field'],
+                'key' => $item['field']
+            ];
+        }, $this->getFullColumns());
+    }
+
+    /**
+     * 获取当前表个头
+     * @return array|mixed
+     */
+    public function getTableHeader() {
+        return $this->_tableHeaders;
+    }
+
+    /**
      * Initialize the trait
      *
      * @return void
@@ -367,6 +392,7 @@ trait HasSearch
         // Automatically create a random token
         $this->_relationTrans = $this->relationTrans ?? [];
         $this->_attributeLabels = $this->attributeLabels ?? [];
+        $this->_tableHeaders = $this->tableHeaders ?? $this->getDefaultTableHeader();
     }
 
     /**
